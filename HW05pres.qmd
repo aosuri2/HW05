@@ -1,0 +1,77 @@
+---
+title: "World Development Indicators 2022"
+author: "Anita Osuri"
+format:
+  revealjs:
+    theme: serif
+    transition: slide
+    slide-number: true
+bibliography: references.bib
+execute:
+  echo: false
+---
+
+## Indicators Analyzed
+
+-   Education expenditure (% of GDP)
+-   Health expenditure (% of GDP)
+-   Primary school enrollment rate
+-   Life expectancy
+
+------------------------------------------------------------------------
+
+## Education vs Primary Enrollment {.smaller}
+
+There is no strong linear relationship between education expenditure and primary school enrollment. It seems that regardless of the education expenditure (% of GDP), the primary enrollment rate still stays consistently around 100%. This suggests that there are other factors besides education spending that can alter primary enrollment.
+
+```{r}
+library(ggplot2) 
+wdi<-read.csv("/Users/anitaosuri/Downloads/wdi.csv")
+ggplot(wdi, aes(x = education_expenditure_gdp_share, y = primary_school_enrolment_rate)) + geom_point(alpha = 0.7, color = "steelblue") + labs(title = "Education Spending vs Primary Enrollment (2022)", x = "Education Expenditure (% of GDP)", y = "Primary Enrollment Rate (%)")
+```
+
+------------------------------------------------------------------------
+
+## Health Expenditure vs. Measles Immunization {.smaller}
+
+This shows that there is no strong relationship between health expenditure (as percent of gdp share) and measles immunization rate. There is clustering near high immunization rates (just below 100%), regardless of health expenditure per % of gdp. This demonstrates that there are other factors affecting measles immunization rate besides health spending.
+
+```{r}
+ggplot(wdi, aes(x = health_expenditure_gdp_share, y = measles_immunisation_rate)) + geom_point(alpha = 0.7, color = "darkgreen") + labs(title = "Health Spending vs Measles Immunization (2022)", x = "Health Expenditure (% of GDP)", y = "Measles Immunization Rate (%)")
+```
+
+------------------------------------------------------------------------
+
+## Average Life Expectancy by Country {.smaller}
+
+This demonstrates the countries that have the 10 highest life expectancy numbers. All of the countries are smaller countries and mainly high income with high healthcare standards as well. The differences between the life expectancies are very minimal based on the bar graph.
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+top10_lifeexp <- wdi %>%
+  arrange(desc(life_expectancy)) %>%
+  slice_head(n = 10)
+
+ggplot(top10_lifeexp, aes(x = reorder(country, life_expectancy), y = life_expectancy)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(
+    title = "Top 10 Countries by Life Expectancy (2022)",
+    x = "Country",
+    y = "Life Expectancy (years)",
+    caption = "Source: World Development Indicators (World Bank, 2022)"
+  ) +
+  theme_minimal()
+```
+
+------------------------------------------------------------------------
+
+## Conclusion {.smaller}
+
+1.  There is no strong linear relationship between education expenditure and primary school enrollment. It seems that regardless of the education expenditure (% of GDP), the primary enrollment rate still stays consistently around 100%.
+
+2.  There is no strong relationship between health expenditure (as percent of gdp share) and measles immunization rate. There is clustering near high immunization rates (just below 100%), regardless of health expenditure per % of gdp.
+
+3.  Countries that have the 10 highest life expectancy numbers are smaller countries and mainly high income. The differences between the life expectancies are very minimal based on the bar graph.
