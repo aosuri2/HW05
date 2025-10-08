@@ -5,7 +5,7 @@ date: "2025-10-07"
 format:
   html: default
 execute:
-  echo: true
+  echo: false
 bibliography: references.bib
 ---
 
